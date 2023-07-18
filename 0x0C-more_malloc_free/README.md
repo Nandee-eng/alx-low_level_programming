@@ -1,67 +1,52 @@
-0. Trust no one
-mandatory
-Write a function that allocates memory using malloc.
+README: Malloc and Free in C
+This README provides a brief overview of malloc and free in the C programming language. These functions are used for dynamic memory allocation and deallocation, allowing programs to allocate memory at runtime as needed.
 
-Prototype: void *malloc_checked(unsigned int b);
-Returns a pointer to the allocated memory
-if malloc fails, the malloc_checked function should cause normal process termination with a status value of 98
-  
-1. string_nconcat
-mandatory
-Write a function that concatenates two strings.
+malloc Function
+The malloc function (short for "memory allocation") is used to dynamically allocate memory in C. It reserves a block of memory of a specified size and returns a pointer to the beginning of that block.
 
-Prototype: char *string_nconcat(char *s1, char *s2, unsigned int n);
-The returned pointer shall point to a newly allocated space in memory, which contains s1, followed by the first n bytes of s2, and null terminated
-If the function fails, it should return NULL
-If n is greater or equal to the length of s2 then use the entire string s2
-if NULL is passed, treat it as an empty string
+Syntax
+c
+Copy code
+void* malloc(size_t size);
+Parameters
+size: The number of bytes to allocate.
+Return Value
+On success: a pointer to the beginning of the allocated memory block.
+On failure: NULL (if the allocation failed).
+Example Usage
+c
+Copy code
+#include <stdlib.h>
 
-  
-2. _calloc
-mandatory
-Write a function that allocates memory for an array, using malloc.
+int* numbers = (int*)malloc(5 * sizeof(int));
+if (numbers != NULL) {
+    // Memory allocation successful
+    // Use the 'numbers' array here
+}
+free Function
+The free function is used to deallocate memory that was previously allocated using malloc or related functions. It releases the memory back to the operating system.
 
-Prototype: void *_calloc(unsigned int nmemb, unsigned int size);
-The _calloc function allocates memory for an array of nmemb elements of size bytes each and returns a pointer to the allocated memory.
-The memory is set to zero
-If nmemb or size is 0, then _calloc returns NULL
-If malloc fails, then _calloc returns NULL
-FYI: The standard library provides a different function: calloc. Run man calloc to learn more.
+Syntax
+c
+Copy code
+void free(void* ptr);
+Parameters
+ptr: A pointer to the memory block to deallocate.
+Return Value
+free doesn't return any value.
 
+Example Usage
+c
+Copy code
+int* numbers = (int*)malloc(5 * sizeof(int));
+if (numbers != NULL) {
+    // Memory allocation successful
+    // Use the 'numbers' array here
 
-  
-3. array_range
-mandatory
-Write a function that creates an array of integers.
-
-Prototype: int *array_range(int min, int max);
-The array created should contain all the values from min (included) to max (included), ordered from min to max
-Return: the pointer to the newly created array
-If min > max, return NULL
-If malloc fails, return NULL
-  
-4. _realloc
-#advanced
-Write a function that reallocates a memory block using malloc and free
-
-Prototype: void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-where ptr is a pointer to the memory previously allocated with a call to malloc: malloc(old_size)
-old_size is the size, in bytes, of the allocated space for ptr
-and new_size is the new size, in bytes of the new memory block
-The contents will be copied to the newly allocated space, in the range from the start of ptr up to the minimum of the old and new sizes
-If new_size > old_size, the “added” memory should not be initialized
-If new_size == old_size do not do anything and return ptr
-If ptr is NULL, then the call is equivalent to malloc(new_size), for all values of old_size and new_size
-If new_size is equal to zero, and ptr is not NULL, then the call is equivalent to free(ptr). Return NULL
-Don’t forget to free ptr when it makes sense
-FYI: The standard library provides a different function: realloc. Run man realloc to learn more.
-
-5. Write a program that multiplies two positive numbers.
-
-Usage: mul num1 num2
-num1 and num2 will be passed in base 10
-Print the result, followed by a new line
-If the number of arguments is incorrect, print Error, followed by a new line, and exit with a status of 98
-num1 and num2 should only be composed of digits. If not, print Error, followed by a new line, and exit with a status of 98
-You are allowed to use more than 5 functions in your file
-You can use bc (man bc) to check your results.
+    // Deallocate the memory when it's no longer needed
+    free(numbers);
+}
+Important Considerations
+Memory allocated with malloc should always be freed using free to avoid memory leaks.
+Using memory after it has been freed leads to undefined behavior.
+The returned pointer from malloc should be cast to the appropriate data type before usage.
